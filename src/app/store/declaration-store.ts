@@ -23,6 +23,7 @@ interface DeclarationState {
   setHousingPrimary: (sqm: number, owned: boolean) => void;
   addCar: (cc: number, co2?: number, registeredAfterNov2010?: boolean) => void;
   removeCar: (index: number) => void;
+  updateCar: (index: number, cc: number, co2?: number, registeredAfterNov2010?: boolean) => void;
   setSelfEmployed: (inputs: SelfEmployedInputs | undefined) => void;
   setOnboardingStep: (step: OnboardingState['step']) => void;
   reset: () => void;
@@ -77,6 +78,16 @@ export const useDeclarationStore = create<DeclarationState>()(
     removeCar: (index) =>
       set((s) => {
         s.declaration.tekmiria.cars.splice(index, 1);
+      }),
+
+    updateCar: (index, cc, co2, registeredAfterNov2010 = false) =>
+      set((s) => {
+        const car = s.declaration.tekmiria.cars[index];
+        if (car) {
+          car.cc = cc;
+          car.co2 = co2;
+          car.registeredAfterNov2010 = registeredAfterNov2010;
+        }
       }),
 
     setSelfEmployed: (inputs) =>

@@ -52,8 +52,8 @@ export function SavingsTab() {
 
   return (
     <div className="flex flex-col gap-3 p-4">
-      {tips.map((tip, i) => (
-        <div key={i} className="rounded-lg bg-green-50 border border-green-200 p-3 flex flex-col gap-1">
+      {tips.map((tip) => (
+        <div key={tip.title} className="rounded-lg bg-green-50 border border-green-200 p-3 flex flex-col gap-1">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-green-800">{tip.title}</p>
             <span className="text-xs font-bold text-green-700 tabular-nums">

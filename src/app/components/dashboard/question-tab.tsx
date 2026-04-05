@@ -30,8 +30,8 @@ export function QuestionTab() {
   return (
     <div className="flex flex-col gap-3 p-4">
       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Συχνές Ερωτήσεις</p>
-      {FAQS.map((faq, i) => (
-        <details key={i} className="group rounded-lg border border-gray-200">
+      {FAQS.map((faq) => (
+        <details key={faq.q} className="group rounded-lg border border-gray-200">
           <summary className="flex cursor-pointer items-center justify-between p-3 text-sm font-medium text-gray-800 list-none">
             {faq.q}
             <span className="ml-2 text-gray-400 group-open:rotate-180 transition-transform">▾</span>

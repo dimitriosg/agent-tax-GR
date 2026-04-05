@@ -1,4 +1,5 @@
 import { useDeclarationStore } from '../../store/declaration-store';
+import { isValidAfm } from '../../../engine/alerts';
 
 export function WorkProfileScreen() {
   const afm = useDeclarationStore((s) => s.declaration.taxpayer.afm);
@@ -41,7 +42,7 @@ export function WorkProfileScreen() {
     }
   }
 
-  const canContinue = afm.length === 9;
+  const canContinue = isValidAfm(afm);
 
   return (
     <div className="flex flex-col gap-6 p-4">
@@ -63,8 +64,10 @@ export function WorkProfileScreen() {
           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm
                      focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {afm.length > 0 && afm.length < 9 && (
-          <p className="text-xs text-red-500">Το ΑΦΜ πρέπει να έχει 9 ψηφία</p>
+        {afm.length > 0 && !isValidAfm(afm) && (
+          <p className="text-xs text-red-500">
+            {afm.length < 9 ? 'Το ΑΦΜ πρέπει να έχει 9 ψηφία' : 'Μη έγκυρος ΑΦΜ — ελέγξτε τον αριθμό'}
+          </p>
         )}
       </div>
 

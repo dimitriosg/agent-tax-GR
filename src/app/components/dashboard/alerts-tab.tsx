@@ -31,7 +31,7 @@ export function AlertsTab() {
   return (
     <div className="flex flex-col gap-3 p-4">
       {alerts.map((alert, i) => (
-        <div key={i} className="rounded-lg border border-gray-200 p-3 flex flex-col gap-1">
+        <div key={`${alert.code}-${i}`} className="rounded-lg border border-gray-200 p-3 flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Chip
               label={severityLabel(alert.severity)}

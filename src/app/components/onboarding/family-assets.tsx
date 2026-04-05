@@ -13,6 +13,7 @@ export function FamilyAssetsScreen() {
   const setHousingPrimary = useDeclarationStore((s) => s.setHousingPrimary);
   const addCar = useDeclarationStore((s) => s.addCar);
   const removeCar = useDeclarationStore((s) => s.removeCar);
+  const updateCar = useDeclarationStore((s) => s.updateCar);
   const setOnboardingStep = useDeclarationStore((s) => s.setOnboardingStep);
 
   function handleFinish() {
@@ -75,15 +76,7 @@ export function FamilyAssetsScreen() {
               <NumericInput
                 label={`Αυτ. ${i + 1} — κ.εκ.`}
                 value={car.cc}
-                onChange={(cc) => {
-                  const updated = [...cars];
-                  updated[i] = { ...car, cc };
-                  // We update via remove+add approach using store actions
-                  removeCar(i);
-                  // Re-add after removal would shift indices; use a direct splice approach
-                  // Since we don't have an updateCar action, we rely on re-adding
-                  addCar(cc, car.co2, car.registeredAfterNov2010);
-                }}
+                onChange={(cc) => updateCar(i, cc, car.co2, car.registeredAfterNov2010)}
                 suffix="κ.εκ."
               />
             </div>
