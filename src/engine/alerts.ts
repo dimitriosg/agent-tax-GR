@@ -206,7 +206,7 @@ function validateBusinessIncomeConsistency(
   }
 
   // FY2025: new codes 437–440 consistency
-  if (config.newCodes.includes('047') && declaration.newBusinessCodes) {
+  if (config.newCodes.includes('437') && declaration.newBusinessCodes) {
     const { code437, code438, code439, code440 } = declaration.newBusinessCodes;
     const hasNewCodes = (code437 ?? 0) > 0 || (code438 ?? 0) > 0 ||
                         (code439 ?? 0) > 0 || (code440 ?? 0) > 0;

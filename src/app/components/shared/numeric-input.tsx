@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react';
+
 interface NumericInputProps {
   label: string;
   value: number;
@@ -19,7 +21,7 @@ export function NumericInput({
   max,
   disabled = false,
 }: NumericInputProps) {
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const raw = e.target.value.replace(/[^\d]/g, '');
     const num = raw === '' ? 0 : parseInt(raw, 10);
     if (max !== undefined && num > max) return;

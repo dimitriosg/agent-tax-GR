@@ -1,6 +1,7 @@
 /**
  * E1 Declaration data types — maps to Sheet 1 (ΔΕΔΟΜΕΝΑ ΔΗΛΩΣΗΣ) structure.
- * All monetary values in euros (whole numbers, no cents).
+ * Input monetary values are integers (whole euros). Calculated results may
+ * include up to 2 decimal places due to rate-based arithmetic (round2).
  */
 
 // ─── Income Types ───────────────────────────────────────────────────────────

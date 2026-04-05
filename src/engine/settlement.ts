@@ -220,11 +220,15 @@ function calculateNextYearPrepayment(
   declaration: E1Declaration,
   config: TaxConfig,
 ): number {
-  // Prepayment applies primarily to business/agricultural income
-  const hasBusiness = declaration.income.business > 0 || declaration.income.agricultural > 0;
-  if (!hasBusiness) return 0;
+  const hasBusiness = declaration.income.business > 0;
+  const hasAgricultural = declaration.income.agricultural > 0;
+  if (!hasBusiness && !hasAgricultural) return 0;
 
-  return round2(finalTaxDue * config.prepaymentRate.business);
+  // Agricultural-only income uses the agricultural prepayment rate
+  const rate = !hasBusiness && hasAgricultural
+    ? config.prepaymentRate.agricultural
+    : config.prepaymentRate.business;
+  return round2(finalTaxDue * rate);
 }
 
 // ─── Digital Transaction Fee (N.5135/2024 Art.7) ──────────────────────────

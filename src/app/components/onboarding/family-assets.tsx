@@ -12,8 +12,8 @@ export function FamilyAssetsScreen() {
   const setDependents = useDeclarationStore((s) => s.setDependents);
   const setHousingPrimary = useDeclarationStore((s) => s.setHousingPrimary);
   const addCar = useDeclarationStore((s) => s.addCar);
-  const removeCar = useDeclarationStore((s) => s.removeCar);
   const updateCar = useDeclarationStore((s) => s.updateCar);
+  const removeCar = useDeclarationStore((s) => s.removeCar);
   const setOnboardingStep = useDeclarationStore((s) => s.setOnboardingStep);
 
   function handleFinish() {
@@ -71,12 +71,12 @@ export function FamilyAssetsScreen() {
           <p className="text-xs text-gray-400">Δεν έχετε καταχωρήσει αυτοκίνητα.</p>
         )}
         {cars.map((car, i) => (
-          <div key={i} className="flex items-center gap-2 rounded-lg border border-gray-200 p-2">
+          <div key={`car-${i}-${car.cc}`} className="flex items-center gap-2 rounded-lg border border-gray-200 p-2">
             <div className="flex-1">
               <NumericInput
                 label={`Αυτ. ${i + 1} — κ.εκ.`}
                 value={car.cc}
-                onChange={(cc) => updateCar(i, cc, car.co2, car.registeredAfterNov2010)}
+                onChange={(cc) => updateCar(i, { cc })}
                 suffix="κ.εκ."
               />
             </div>

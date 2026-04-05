@@ -7,9 +7,15 @@ import { FY2025 } from '../../config/fy2025';
 import { FY2024 } from '../../config/fy2024';
 import type { E1Declaration } from '../../engine/types';
 
+const SUPPORTED_CONFIGS: Record<number, TaxConfig> = {
+  2024: FY2024,
+  2025: FY2025,
+};
+
 function getConfig(year: number): TaxConfig {
-  if (year === 2024) return FY2024;
-  return FY2025;
+  const config = SUPPORTED_CONFIGS[year];
+  if (!config) throw new Error(`Fiscal year ${year} is not supported. Supported years: ${Object.keys(SUPPORTED_CONFIGS).join(', ')}`);
+  return config;
 }
 
 interface SettlementState {

@@ -22,8 +22,8 @@ interface DeclarationState {
   setElectronicPayments: (total: number) => void;
   setHousingPrimary: (sqm: number, owned: boolean) => void;
   addCar: (cc: number, co2?: number, registeredAfterNov2010?: boolean) => void;
+  updateCar: (index: number, patch: Partial<{ cc: number; co2: number; registeredAfterNov2010: boolean }>) => void;
   removeCar: (index: number) => void;
-  updateCar: (index: number, cc: number, co2?: number, registeredAfterNov2010?: boolean) => void;
   setSelfEmployed: (inputs: SelfEmployedInputs | undefined) => void;
   setOnboardingStep: (step: OnboardingState['step']) => void;
   reset: () => void;
@@ -75,19 +75,18 @@ export const useDeclarationStore = create<DeclarationState>()(
         s.declaration.tekmiria.cars.push({ cc, co2, registeredAfterNov2010 });
       }),
 
+    updateCar: (index, patch) =>
+      set((s) => {
+        const car = s.declaration.tekmiria.cars[index];
+        if (!car) return;
+        if (patch.cc !== undefined) car.cc = patch.cc;
+        if (patch.co2 !== undefined) car.co2 = patch.co2;
+        if (patch.registeredAfterNov2010 !== undefined) car.registeredAfterNov2010 = patch.registeredAfterNov2010;
+      }),
+
     removeCar: (index) =>
       set((s) => {
         s.declaration.tekmiria.cars.splice(index, 1);
-      }),
-
-    updateCar: (index, cc, co2, registeredAfterNov2010 = false) =>
-      set((s) => {
-        const car = s.declaration.tekmiria.cars[index];
-        if (car) {
-          car.cc = cc;
-          car.co2 = co2;
-          car.registeredAfterNov2010 = registeredAfterNov2010;
-        }
       }),
 
     setSelfEmployed: (inputs) =>
