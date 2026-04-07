@@ -25,6 +25,9 @@ function scoreFactors(f: ConfidenceFactors): number {
   if (f.hasElectronicPayments) score += 15;
 
   // Self-employed: bonus only if complete
+  // NOTE: when hasSelfEmployed=true but selfEmployedComplete=false the user silently loses 15
+  // points (kadCode or yearsOfOperation missing). Consider surfacing a hint in the UI so the
+  // user knows they need to complete their self-employment details to recover the full score.
   if (f.hasSelfEmployed && f.selfEmployedComplete) score += 15;
   else if (!f.hasSelfEmployed) score += 15; // not applicable → full credit
 

@@ -79,6 +79,15 @@ export function FamilyAssetsScreen() {
                 onChange={(cc) => updateCar(i, { cc })}
                 suffix="κ.εκ."
               />
+              <label className="flex items-center gap-2 text-xs cursor-pointer mt-1">
+                <input
+                  type="checkbox"
+                  checked={car.registeredAfterNov2010 ?? false}
+                  onChange={(e) => updateCar(i, { registeredAfterNov2010: e.target.checked })}
+                  className="h-3.5 w-3.5 rounded border-gray-300 text-blue-600"
+                />
+                <span className="text-gray-600">Μετά 11/2010 (τεκμήριο CO2)</span>
+              </label>
             </div>
             <button
               type="button"

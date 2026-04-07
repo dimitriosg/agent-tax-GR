@@ -33,6 +33,8 @@ export function useScan(): UseScanReturn {
   const setIncome = useDeclarationStore((s) => s.setIncome);
   const setWithheld = useDeclarationStore((s) => s.setWithheld);
 
+  // TODO(extension): when running as a Chrome extension, this must become async
+  // and delegate DOM access to chrome.scripting.executeScript({ target, func: scanE1Page })
   const scan = useCallback(() => {
     setStatus('scanning');
 
