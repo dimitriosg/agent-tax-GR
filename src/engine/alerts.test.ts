@@ -26,7 +26,7 @@ function minimalDeclaration(overrides: Partial<E1Declaration> = {}): E1Declarati
       donations: 0, medicalExpenses: 0, disabilityReduction: 0,
       energyUpgrade: 0, investmentLaw: 0, rentalExemption: 0, tipsExemption: 0,
     },
-    electronicPayments: { totalElectronic: 10_000, requiredPercentage: 0.25 },
+    electronicPayments: { totalElectronic: 10_000 },
     tekmiria: {
       housing: { primaryResidence: { sqm: 80, owned: true }, secondaryResidences: [] },
       cars: [],
@@ -123,7 +123,7 @@ describe('evaluateAlerts', () => {
         business: 0, imputedProperty: 0, realEstate: 0,
         dividends: 0, interest: 0, royalties: 0, capitalGains: 0, foreign: 0,
       },
-      electronicPayments: { totalElectronic: 2_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 2_000 },
     });
     const alerts = evaluateAlerts(decl, FY2024);
     // Required: 20,000 × 25% = 5,000. Actual: 2,000 → shortfall

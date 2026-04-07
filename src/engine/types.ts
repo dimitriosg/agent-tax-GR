@@ -52,7 +52,7 @@ export interface IncomeDeclaration {
 // ─── Withholding & Prepayment ────────────────────────────────────────────────
 
 export interface WithholdingData {
-  taxWithheld: number;             // κωδ. 313–320 (φόρος παρακρατηθείς)
+  taxWithheld: number;             // κωδ. 315–320 (φόρος παρακρατηθείς)
   priorYearPrepayment: number;     // Προκαταβολή φόρου προηγ. έτους
 }
 
@@ -72,7 +72,6 @@ export interface Deductions {
 
 export interface ElectronicPayments {
   totalElectronic: number;         // Total electronic payment amount for the year
-  requiredPercentage: number;      // Required % of income (25% standard)
 }
 
 // ─── Τεκμήρια (Presumptive Expenses) ─────────────────────────────────────────

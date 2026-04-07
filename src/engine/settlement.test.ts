@@ -25,7 +25,7 @@ function buildDeclaration(overrides: Partial<E1Declaration> = {}): E1Declaration
       donations: 0, medicalExpenses: 0, disabilityReduction: 0,
       energyUpgrade: 0, investmentLaw: 0, rentalExemption: 0, tipsExemption: 0,
     },
-    electronicPayments: { totalElectronic: 0, requiredPercentage: 0.25 },
+    electronicPayments: { totalElectronic: 0 },
     tekmiria: {
       housing: { primaryResidence: { sqm: 0, owned: false }, secondaryResidences: [] },
       cars: [],
@@ -55,7 +55,7 @@ describe('calculateSettlement', () => {
         business: 0, imputedProperty: 0, realEstate: 0,
         dividends: 0, interest: 0, royalties: 0, capitalGains: 0, foreign: 0,
       },
-      electronicPayments: { totalElectronic: 10_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 10_000 },
     });
 
     const result = calculateSettlement(decl, FY2024);
@@ -82,7 +82,7 @@ describe('calculateSettlement', () => {
         dividends: 0, interest: 0, royalties: 0, capitalGains: 0, foreign: 0,
       },
       withholding: { taxWithheld: 5_000, priorYearPrepayment: 0 },
-      electronicPayments: { totalElectronic: 8_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 8_000 },
     });
 
     const result = calculateSettlement(decl, FY2024);
@@ -125,7 +125,7 @@ describe('calculateSettlement', () => {
         dividends: 5_000, interest: 2_000, royalties: 0, capitalGains: 0, foreign: 0,
       },
       withholding: { taxWithheld: 2_000, priorYearPrepayment: 500 },
-      electronicPayments: { totalElectronic: 6_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 6_000 },
       taxpayer: {
         afm: '090000045',
         maritalStatus: 'married',
@@ -160,7 +160,7 @@ describe('calculateSettlement', () => {
         business: 0, imputedProperty: 0, realEstate: 0,
         dividends: 0, interest: 0, royalties: 0, capitalGains: 0, foreign: 0,
       },
-      electronicPayments: { totalElectronic: 5_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 5_000 },
     });
 
     const result = calculateSettlement(decl, FY2024);
@@ -222,7 +222,7 @@ describe('calculateSettlement', () => {
         swimmingPool: 'none',
         acquisitions: {},
       },
-      electronicPayments: { totalElectronic: 2_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 2_000 },
     });
 
     const result = calculateSettlement(decl, FY2024);
@@ -251,7 +251,7 @@ describe('calculateSettlement', () => {
         swimmingPool: 'none',
         acquisitions: {},
       },
-      electronicPayments: { totalElectronic: 20_000, requiredPercentage: 0.25 },
+      electronicPayments: { totalElectronic: 20_000 },
     });
 
     const result = calculateSettlement(decl, FY2024);

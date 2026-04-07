@@ -82,11 +82,12 @@ export function calculateSettlement(
   );
 
   // R24 — Art.16 reduction
-  // Per ΚΦΕ Άρθ.16 παρ.1, the phaseout base is totalTaxableIncome (R10),
-  // which includes Art.28A adjustments and tekmiria excess — not just the
-  // raw employment+pension declared values.
+  // Per ΚΦΕ Άρθ.16 παρ.1, the reduction applies exclusively to employment and
+  // pension income. The gate and phaseout both use the employment+pension base
+  // (adjustedIncome reflects any Art.28A or tekmiria additions to those slices).
+  const employmentPensionIncome = adjustedIncome.employment + adjustedIncome.pension;
   const art16 = calculateArt16Reduction(
-    totalTaxableIncome,
+    employmentPensionIncome,
     declaration.taxpayer.dependents,
     config,
   );

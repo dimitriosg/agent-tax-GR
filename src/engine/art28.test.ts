@@ -53,7 +53,7 @@ describe('Art.28A — exemptions', () => {
   });
 });
 
-// ─── α Component (Base + Triennial) ───────��──────────────────────────────
+// ─── α Component (Base + Triennial) ──────────────────────────────────────
 
 describe('Art.28A — α component', () => {
   it('calculates base for 1–3 years (multiplier 1.0)', () => {
@@ -105,7 +105,7 @@ describe('Art.28A — α component', () => {
   });
 });
 
-// ─── �� Component (Payroll) ────────────────────────────────────────────────
+// ─── β Component (Payroll) ────────────────────────────────────────────────
 
 describe('Art.28A — β component', () => {
   it('calculates β as 10% of payroll', () => {
@@ -126,7 +126,7 @@ describe('Art.28A — β component', () => {
   });
 });
 
-// ─���─ γ Component (KAD Turnover) ────────────────��─────────────────────────
+// ─── γ Component (KAD Turnover) ──────────────────────────────────────────
 
 describe('Art.28A — γ component', () => {
   it('returns 0 when turnover ≤ threshold (€10,000)', () => {
@@ -293,7 +293,7 @@ describe('calculateActiveDays', () => {
   });
 });
 
-// ─── Proration ─────���──────────────────────────────────────────────────────
+// ─── Proration ────────────────────────────────────────────────────────────
 
 describe('Art.28A — operating days proration', () => {
   it('prorates for partial year (suspension period)', () => {
@@ -322,7 +322,7 @@ describe('Art.28A — operating days proration', () => {
   });
 });
 
-// ─��─ Art.5Γ Flat Tax ──────────────────────────────────────────────────────
+// ─── Art.5Γ Flat Tax ──────────────────────────────────────────────────────
 
 describe('Art.28A — Art.5Γ flat-tax halving', () => {
   it('halves minimum when flat-tax elected', () => {

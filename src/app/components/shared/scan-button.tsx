@@ -1,4 +1,4 @@
-import { useScan, type ScanStatus } from '../../hooks/use-scan';
+import { type ScanStatus } from '../../hooks/use-scan';
 
 function statusConfig(status: ScanStatus): { icon: string; text: string; color: string; bgColor: string } {
   switch (status) {

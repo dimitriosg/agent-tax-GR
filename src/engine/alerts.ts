@@ -2,6 +2,7 @@ import type { TaxConfig } from '../config/types.js';
 import type { E1Declaration, Alert } from './types.js';
 import { sumDeclaredIncome } from './brackets.js';
 import { calculateTekmiria } from './tekmiria.js';
+import { calculateArt28Minimum } from './art28.js';
 
 /**
  * Alert & validation engine — mirrors Rows 117–121 of ΕΚΚΑΘΑΡΙΣΗ.
@@ -125,10 +126,24 @@ function validateTekmiria(
   const alerts: Alert[] = [];
 
   const declared = sumDeclaredIncome(declaration.income);
+
+  // Art.28A adjustment: if self-employed and the minimum income (Art.28A) exceeds
+  // declared business income, the settlement adds the excess to the taxable base.
+  // The tekmiria check must use the same adjusted income so both agree on whether
+  // there is a tekmiria excess (mirrors calculateSettlement logic).
+  let art28Adjustment = 0;
+  if (declaration.selfEmployed && declaration.income.business > 0) {
+    const art28Result = calculateArt28Minimum(declaration.selfEmployed, config);
+    if (!art28Result.isExempt) {
+      art28Adjustment = Math.max(0, art28Result.finalMinimum - declaration.income.business);
+    }
+  }
+  const adjustedDeclared = declared + art28Adjustment;
+
   const tekmiria = calculateTekmiria(declaration.tekmiria, config);
 
-  if (tekmiria.totalPresumptive > declared) {
-    const excess = Math.round(tekmiria.totalPresumptive - declared);
+  if (tekmiria.totalPresumptive > adjustedDeclared) {
+    const excess = Math.round(tekmiria.totalPresumptive - adjustedDeclared);
     alerts.push({
       code: 'TEKMIRIA_EXCESS',
       severity: 'high',

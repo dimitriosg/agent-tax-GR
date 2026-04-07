@@ -25,6 +25,9 @@ const INCOME_ROWS: IncomeRow[] = [
   { field: 'capitalGains', label: 'Υπεραξία Κεφαλαίου', code: '297–298' },
   { field: 'merchantNavy', label: 'Εμποροναυτικό', code: '305–306' },
   { field: 'foreign', label: 'Αλλοδαπή Αμοιβή', code: '389–390' },
+  // NOTE: Κωδ. 389–390 αφορά τη στήλη φορολογούμενου. Για FY2025 τα
+  // νέα κωδ. 047–048 (μείωση εισοδήματος αλλοδαπής για μικρούς δήμους)
+  // είναι ξεχωριστά πεδία εκπτώσεων — δεν αντικαθιστούν τα 389–390.
 ];
 
 export function IncomeInputScreen() {

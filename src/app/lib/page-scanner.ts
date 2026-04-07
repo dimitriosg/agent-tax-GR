@@ -188,4 +188,4 @@ export function scanE1Page(): ScanResult {
  * Convenience: detect + scan in one call.
  * Returns the scan result only if the page is a valid TaxisNet E1 form.
  */
-export { detectTaxisNetE1Page } from '../lib/taxisnet-detector';
+export { detectTaxisNetE1Page } from './taxisnet-detector';

@@ -39,7 +39,6 @@ export function createDefaultDeclaration(fiscalYear = 2025): E1Declaration {
     },
     electronicPayments: {
       totalElectronic: 0,
-      requiredPercentage: 0.25,
     },
     tekmiria: {
       housing: {

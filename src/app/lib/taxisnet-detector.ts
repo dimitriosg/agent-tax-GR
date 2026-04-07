@@ -27,13 +27,22 @@ const E1_PAGE_MARKERS = [
   'Φορολογική Δήλωση',
 ];
 
-/** Well-known input element identifiers on the TaxisNet E1 form. */
-const E1_FIELD_MARKERS = [
+/** Well-known input element identifiers on the TaxisNet E1 form.
+ *
+ * TaxisNet uses either `code_NNN` element IDs/names (older portal) or
+ * numeric `data-code="NNN"` attributes (newer portal). Signal 3 detection
+ * checks for both patterns so the detector stays consistent with what the
+ * page-scanner actually reads.
+ */
+const E1_FIELD_MARKERS_PREFIXED = [
   'code_301', 'code_302',
   'code_303', 'code_304',
   'code_401', 'code_402',
   'code_291', 'code_292',
 ];
+
+/** Same codes without prefix — used for `data-code="NNN"` style attributes. */
+const E1_FIELD_MARKERS_NUMERIC = ['301', '302', '303', '304', '401', '402', '291', '292'];
 
 export interface DetectionResult {
   /** Whether the page is (very likely) the TaxisNet E1 form. */
@@ -79,14 +88,19 @@ export function detectTaxisNetE1Page(): DetectionResult {
     // DOM access error
   }
 
-  // Signal 3 — Characteristic E1 input fields in the DOM
+  // Signal 3 — Characteristic E1 input fields in the DOM.
+  // Check both prefixed IDs/names (e.g. id="code_301") and numeric data-code
+  // attributes (e.g. data-code="301"), matching what page-scanner.ts reads.
   try {
-    const found = E1_FIELD_MARKERS.some(
+    const foundPrefixed = E1_FIELD_MARKERS_PREFIXED.some(
       (id) =>
         document.getElementById(id) != null ||
         document.querySelector(`[name="${id}"], [data-code="${id}"], [id*="${id}"]`) != null,
     );
-    if (found) {
+    const foundNumeric = E1_FIELD_MARKERS_NUMERIC.some(
+      (code) => document.querySelector(`[data-code="${code}"]`) != null,
+    );
+    if (foundPrefixed || foundNumeric) {
       signals++;
       details.push('DOM: E1 field codes detected');
     }
