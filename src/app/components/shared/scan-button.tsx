@@ -17,12 +17,17 @@ function statusConfig(status: ScanStatus): { icon: string; text: string; color: 
   }
 }
 
-export function ScanButton() {
-  const { status, scanResult, autoFilledFields, scan, clearScan } = useScan();
+interface ScanButtonProps {
+  status: ScanStatus;
+  autoFilledCount: number;
+  onScan: () => void;
+  onClear: () => void;
+}
 
+export function ScanButton({ status, autoFilledCount, onScan, onClear }: ScanButtonProps) {
   const cfg = statusConfig(status);
-  const successText = scanResult?.success
-    ? `Συμπληρώθηκαν ${autoFilledFields.size} πεδία αυτόματα`
+  const successText = status === 'success'
+    ? `Συμπληρώθηκαν ${autoFilledCount} πεδία αυτόματα`
     : '';
 
   const isClickable = status !== 'scanning';
@@ -31,7 +36,7 @@ export function ScanButton() {
     <div className="flex flex-col gap-1">
       <button
         type="button"
-        onClick={status === 'success' || status === 'partial' ? clearScan : scan}
+        onClick={status === 'success' || status === 'partial' ? onClear : onScan}
         disabled={!isClickable}
         className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium
                    transition-colors disabled:opacity-50 disabled:cursor-wait ${cfg.bgColor}`}

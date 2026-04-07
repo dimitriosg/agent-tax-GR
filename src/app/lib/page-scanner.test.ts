@@ -67,16 +67,31 @@ describe('scanE1Page', () => {
     expect(result.fieldsFound).toBe(3);
   });
 
-  it('extracts withholding tax from code_313', () => {
+  it('extracts withholding tax from code_315', () => {
     const input = document.createElement('input');
-    input.id = 'code_313';
+    input.id = 'code_315';
     input.value = '5000';
     document.body.appendChild(input);
 
     const result = scanE1Page();
-    // code 313 maps to both agricultural income and withholding
-    // The scanner reads taxpayer codes; 313 is odd so it's scanned for income
     expect(result.success).toBe(true);
+    expect(result.taxWithheld).toBe(5000);
+  });
+
+  it('sums multiple withholding codes (315 + 317)', () => {
+    const input1 = document.createElement('input');
+    input1.id = 'code_315';
+    input1.value = '3000';
+    document.body.appendChild(input1);
+
+    const input2 = document.createElement('input');
+    input2.id = 'code_317';
+    input2.value = '2000';
+    document.body.appendChild(input2);
+
+    const result = scanE1Page();
+    expect(result.success).toBe(true);
+    expect(result.taxWithheld).toBe(5000);
   });
 
   it('ignores zero-value fields', () => {

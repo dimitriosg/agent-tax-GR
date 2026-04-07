@@ -1,6 +1,7 @@
 import { useDeclarationStore } from '../../store/declaration-store';
 import { NumericInput } from '../shared/numeric-input';
 import { ScanButton } from '../shared/scan-button';
+import { useScan } from '../../hooks/use-scan';
 import type { IncomeDeclaration } from '../../../engine/types';
 
 type IncomeField = keyof IncomeDeclaration;
@@ -35,6 +36,8 @@ export function IncomeInputScreen() {
   const electronicTotal = useDeclarationStore((s) => s.declaration.electronicPayments.totalElectronic);
   const setOnboardingStep = useDeclarationStore((s) => s.setOnboardingStep);
 
+  const { status, autoFilledFields, scan, clearScan } = useScan();
+
   const totalIncome = Object.values(income).reduce((a, b) => a + b, 0);
 
   return (
@@ -45,7 +48,12 @@ export function IncomeInputScreen() {
       </div>
 
       {/* Auto-scan from TaxisNet page */}
-      <ScanButton />
+      <ScanButton
+        status={status}
+        autoFilledCount={autoFilledFields.size}
+        onScan={scan}
+        onClear={clearScan}
+      />
 
       <div className="flex flex-col gap-3">
         {INCOME_ROWS.map(({ field, label, code }) => (
@@ -55,6 +63,7 @@ export function IncomeInputScreen() {
             code={code}
             value={income[field]}
             onChange={(v) => setIncome(field, v)}
+            autoFilled={autoFilledFields.has(field)}
           />
         ))}
       </div>
@@ -63,9 +72,10 @@ export function IncomeInputScreen() {
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Παρακρατήσεις</p>
         <NumericInput
           label="Φόρος Παρακρατηθείς"
-          code="313–320"
+          code="315–320"
           value={withholding.taxWithheld}
           onChange={setWithheld}
+          autoFilled={autoFilledFields.has('taxWithheld')}
         />
         <NumericInput
           label="Ηλεκτρονικές Συναλλαγές (σύνολο έτους)"

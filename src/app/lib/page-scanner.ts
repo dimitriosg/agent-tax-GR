@@ -18,6 +18,9 @@ import type { IncomeDeclaration } from '../../engine/types';
  * Maps E1 form code numbers to internal IncomeDeclaration field names.
  * Each E1 code pair has a "taxpayer" code (odd) and "spouse" code (even).
  * We read the taxpayer codes (first column).
+ *
+ * Note: Codes 313–314 are agricultural income in the E1 Πίνακα 4Α,
+ * while withholding codes (315–320) appear in a separate section.
  */
 const INCOME_CODE_MAP: Record<string, keyof IncomeDeclaration> = {
   '301': 'employment',
@@ -50,8 +53,12 @@ const INCOME_CODE_MAP: Record<string, keyof IncomeDeclaration> = {
   '390': 'foreign',         // spouse
 };
 
-/** Withholding-related codes */
-const WITHHOLDING_CODE = '313';
+/**
+ * Withholding tax codes (separate from income codes).
+ * The E1 form uses codes 315–320 for different withholding sources.
+ * We scan all of them and sum the values.
+ */
+const WITHHOLDING_CODES = ['315', '316', '317', '318', '319', '320'];
 
 // ─── Scan Result Types ────────────────────────────────────────────────────
 
@@ -109,7 +116,13 @@ function readCodeValue(code: string): number | null {
 }
 
 /**
- * Parse a Greek-formatted number string (e.g. "12.345,67" or "12345,67" or "12345").
+ * Parse a Greek-locale formatted number string.
+ *
+ * Greek number format uses dots as thousand separators and comma as decimal:
+ *   "12.345,67" → 12345.67
+ *   "12345"     → 12345
+ *   "1.000"     → 1000
+ *
  * Returns the numeric value or null if unparseable.
  */
 function parseGreekNumber(raw: string): number | null {
@@ -156,12 +169,14 @@ export function scanE1Page(): ScanResult {
     }
   }
 
-  // Scan withholding
-  fieldsScanned++;
-  const withheldValue = readCodeValue(WITHHOLDING_CODE);
-  if (withheldValue != null && withheldValue > 0) {
-    taxWithheld = withheldValue;
-    fieldsFound++;
+  // Scan withholding (codes 315–320, summed)
+  for (const code of WITHHOLDING_CODES) {
+    fieldsScanned++;
+    const value = readCodeValue(code);
+    if (value != null && value > 0) {
+      taxWithheld = (taxWithheld ?? 0) + value;
+      fieldsFound++;
+    }
   }
 
   const success = fieldsFound > 0;
