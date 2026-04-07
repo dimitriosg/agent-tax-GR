@@ -16,41 +16,33 @@ import type { IncomeDeclaration } from '../../engine/types';
 
 /**
  * Maps E1 form code numbers to internal IncomeDeclaration field names.
- * Each E1 code pair has a "taxpayer" code (odd) and "spouse" code (even).
- * We read the taxpayer codes (first column).
+ *
+ * Only taxpayer-column codes are included (spouse codes are excluded since
+ * we don't scan the spouse column — that would require separate spouseIncome
+ * handling which is not yet implemented).
  *
  * Note: Codes 313–314 are agricultural income in the E1 Πίνακα 4Α,
  * while withholding codes (315–320) appear in a separate section.
  */
 const INCOME_CODE_MAP: Record<string, keyof IncomeDeclaration> = {
+  // Employment & pension (taxpayer column)
   '301': 'employment',
-  '302': 'employment',     // spouse
   '303': 'pension',
-  '304': 'pension',         // spouse
   '305': 'merchantNavy',
-  '306': 'merchantNavy',    // spouse
   '313': 'agricultural',
-  '314': 'agricultural',    // spouse
   '401': 'business',
-  '402': 'business',        // spouse
   '403': 'imputedProperty',
-  '404': 'imputedProperty', // spouse
+  // Real estate — multiple codes for different property types
   '105': 'realEstate',
-  '106': 'realEstate',
   '107': 'realEstate',
-  '108': 'realEstate',
   '109': 'realEstate',
-  '110': 'realEstate',      // various rental codes
+  // Capital income
   '291': 'dividends',
-  '292': 'dividends',       // spouse
   '293': 'interest',
-  '294': 'interest',        // spouse
   '295': 'royalties',
-  '296': 'royalties',       // spouse
   '297': 'capitalGains',
-  '298': 'capitalGains',    // spouse
+  // Foreign
   '389': 'foreign',
-  '390': 'foreign',         // spouse
 };
 
 /**
@@ -153,12 +145,10 @@ export function scanE1Page(): ScanResult {
   let fieldsScanned = 0;
   let taxWithheld: number | null = null;
 
-  // Scan income fields (taxpayer column only — odd codes)
-  const taxpayerCodes = Object.keys(INCOME_CODE_MAP).filter(
-    (c) => parseInt(c, 10) % 2 === 1 || ['105', '107', '109'].includes(c),
-  );
+  // Scan income fields (all codes in the map are taxpayer-column only)
+  const incomeCodes = Object.keys(INCOME_CODE_MAP);
 
-  for (const code of taxpayerCodes) {
+  for (const code of incomeCodes) {
     fieldsScanned++;
     const value = readCodeValue(code);
     if (value != null && value > 0) {
