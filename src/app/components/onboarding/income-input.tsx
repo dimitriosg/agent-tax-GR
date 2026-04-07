@@ -1,5 +1,6 @@
 import { useDeclarationStore } from '../../store/declaration-store';
 import { NumericInput } from '../shared/numeric-input';
+import { ScanButton } from '../shared/scan-button';
 import type { IncomeDeclaration } from '../../../engine/types';
 
 type IncomeField = keyof IncomeDeclaration;
@@ -7,20 +8,22 @@ type IncomeField = keyof IncomeDeclaration;
 interface IncomeRow {
   field: IncomeField;
   label: string;
+  /** E1 form code pair, e.g. "301–302" */
+  code: string;
   alwaysShow?: boolean;
 }
 
 const INCOME_ROWS: IncomeRow[] = [
-  { field: 'employment', label: 'Μισθωτές Υπηρεσίες', alwaysShow: true },
-  { field: 'pension', label: 'Συντάξεις', alwaysShow: true },
-  { field: 'business', label: 'Επιχειρηματική Δραστηριότητα', alwaysShow: true },
-  { field: 'agricultural', label: 'Αγροτική Επιχείρηση' },
-  { field: 'realEstate', label: 'Εισόδημα Ακίνητης Περιουσίας' },
-  { field: 'dividends', label: 'Μερίσματα' },
-  { field: 'interest', label: 'Τόκοι' },
-  { field: 'capitalGains', label: 'Υπεραξία Κεφαλαίου' },
-  { field: 'merchantNavy', label: 'Εμποροναυτικό' },
-  { field: 'foreign', label: 'Αλλοδαπή Αμοιβή' },
+  { field: 'employment', label: 'Μισθωτές Υπηρεσίες', code: '301–302', alwaysShow: true },
+  { field: 'pension', label: 'Συντάξεις', code: '303–304', alwaysShow: true },
+  { field: 'business', label: 'Επιχειρηματική Δραστηριότητα', code: '401–402', alwaysShow: true },
+  { field: 'agricultural', label: 'Αγροτική Επιχείρηση', code: '313–314' },
+  { field: 'realEstate', label: 'Εισόδημα Ακίνητης Περιουσίας', code: '105–110' },
+  { field: 'dividends', label: 'Μερίσματα', code: '291–292' },
+  { field: 'interest', label: 'Τόκοι', code: '293–294' },
+  { field: 'capitalGains', label: 'Υπεραξία Κεφαλαίου', code: '297–298' },
+  { field: 'merchantNavy', label: 'Εμποροναυτικό', code: '305–306' },
+  { field: 'foreign', label: 'Αλλοδαπή Αμοιβή', code: '389–390' },
 ];
 
 export function IncomeInputScreen() {
@@ -41,11 +44,15 @@ export function IncomeInputScreen() {
         <p className="text-xs text-gray-500 mt-1">Βήμα 2 από 3</p>
       </div>
 
+      {/* Auto-scan from TaxisNet page */}
+      <ScanButton />
+
       <div className="flex flex-col gap-3">
-        {INCOME_ROWS.map(({ field, label }) => (
+        {INCOME_ROWS.map(({ field, label, code }) => (
           <NumericInput
             key={field}
             label={label}
+            code={code}
             value={income[field]}
             onChange={(v) => setIncome(field, v)}
           />
@@ -56,6 +63,7 @@ export function IncomeInputScreen() {
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Παρακρατήσεις</p>
         <NumericInput
           label="Φόρος Παρακρατηθείς"
+          code="313–320"
           value={withholding.taxWithheld}
           onChange={setWithheld}
         />
