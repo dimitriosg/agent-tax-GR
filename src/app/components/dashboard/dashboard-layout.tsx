@@ -26,6 +26,7 @@ export function DashboardLayout() {
   const { result, error } = useSettlement();
   const { alerts } = useAlerts();
   const setOnboardingStep = useDeclarationStore((s) => s.setOnboardingStep);
+  const fiscalYear = useDeclarationStore((s) => s.declaration.fiscalYear);
 
   const criticalCount = alerts.filter((a) => a.severity === 'critical').length;
   const highCount = alerts.filter((a) => a.severity === 'high').length;
@@ -37,7 +38,7 @@ export function DashboardLayout() {
       <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100">
         <div className="flex items-center gap-2">
           <h1 className="text-sm font-bold text-gray-900">σκονάκι</h1>
-          <span className="text-xs text-gray-400">E1 {new Date().getFullYear()}</span>
+          <span className="text-xs text-gray-400">E1 {fiscalYear}</span>
         </div>
         <div className="flex items-center gap-2">
           <YearSwitcher />
